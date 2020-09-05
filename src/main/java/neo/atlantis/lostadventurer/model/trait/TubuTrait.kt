@@ -12,16 +12,19 @@ import neo.atlantis.lostadventurer.metadata.MetadataKeys
 import neo.atlantis.lostadventurer.metadata.NpcAttackFlagMetadata
 import neo.atlantis.lostadventurer.model.range.RectRange
 import net.citizensnpcs.api.trait.Trait
+import net.citizensnpcs.api.trait.trait.Equipment
 import org.bukkit.GameMode
+import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Cat
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.entity.TNTPrimed
+import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
 
-class TubuTrait(private val plugin: JavaPlugin) : Trait("tubu") {
+class TubuTrait(private val plugin: JavaPlugin, private val speed: Float = 1.0f) : Trait("tubu") {
     private val range = RectRange(10.0, 5.0, 10.0)
     private val npcAttackFlagMetadata = NpcAttackFlagMetadata(plugin)
 
@@ -31,6 +34,10 @@ class TubuTrait(private val plugin: JavaPlugin) : Trait("tubu") {
         if (entity.isOnGround) {
             when (state) {
                 State.IDLE -> {
+                    npc.navigator.localParameters.speedModifier(1.0f)
+                    npc.getTrait(Equipment::class.java).apply {
+                        set(Equipment.EquipmentSlot.HAND, ItemStack(Material.FLINT_AND_STEEL))
+                    }
                     val targetPlayer: Entity? = getTargetEntity(entity)
                     if (targetPlayer != null) {
                         entity.setStringMetadata(plugin, MetadataKeys.STATE, State.ATTACK.key)
@@ -50,6 +57,10 @@ class TubuTrait(private val plugin: JavaPlugin) : Trait("tubu") {
                     }
                 }
                 State.ATTACK -> {
+                    npc.navigator.localParameters.speedModifier(speed)
+                    npc.getTrait(Equipment::class.java).apply {
+                        set(Equipment.EquipmentSlot.HAND, ItemStack(Material.TNT))
+                    }
                     val targetPlayer: Entity? = getTargetEntity(entity)
                     if (targetPlayer != null) {
                         npc.navigator.setTarget(targetPlayer.location)
@@ -61,6 +72,10 @@ class TubuTrait(private val plugin: JavaPlugin) : Trait("tubu") {
                     }
                 }
                 State.RUNAWAY -> {
+                    npc.navigator.localParameters.speedModifier(speed)
+                    npc.getTrait(Equipment::class.java).apply {
+                        set(Equipment.EquipmentSlot.HAND, ItemStack(Material.BREAD))
+                    }
                     val tntEntity = range.getEntities(entity.location).filterIsInstance<TNTPrimed>().firstOrNull()
                     if (tntEntity == null) {
                         entity.setStringMetadata(plugin, MetadataKeys.STATE, State.IDLE.key)
@@ -91,7 +106,7 @@ class TubuTrait(private val plugin: JavaPlugin) : Trait("tubu") {
 
     private fun getTargetEntity(entity: Entity): Entity? {
         return range.getEntities(entity.location)
-                .filter { it is Player && it is Cat }
+                .filter { it is Player || it is Cat }
                 .filterNot { it is Player && (it.gameMode == GameMode.SPECTATOR || it.gameMode == GameMode.CREATIVE) }
                 .filterNot { it.getBooleanMetadata(MetadataKeys.IS_ENEMY) }
                 .firstOrNull { it != entity }

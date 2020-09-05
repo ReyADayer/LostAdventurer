@@ -22,11 +22,10 @@ class DraculaTubu : Npc() {
         npc.getTrait(Equipment::class.java).apply {
             set(Equipment.EquipmentSlot.HAND, ItemStack(Material.TNT))
         }
-        npc.addTrait(TubuTrait(plugin))
+        npc.addTrait(TubuTrait(plugin, 2.0f))
         entity.setBooleanMetadata(plugin, MetadataKeys.IS_ENEMY, true)
         if (entity is LivingEntity) {
             entity.health *= 10
-            npc.navigator.localParameters.speedModifier(3.0f)
         }
     }
 }
