@@ -14,8 +14,8 @@ import neo.atlantis.lostadventurer.model.range.RectRange
 import net.citizensnpcs.api.trait.Trait
 import org.bukkit.GameMode
 import org.bukkit.Sound
+import org.bukkit.entity.Cat
 import org.bukkit.entity.Entity
-import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 import org.bukkit.entity.TNTPrimed
 import org.bukkit.plugin.java.JavaPlugin
@@ -91,7 +91,7 @@ class TubuTrait(private val plugin: JavaPlugin) : Trait("tubu") {
 
     private fun getTargetEntity(entity: Entity): Entity? {
         return range.getEntities(entity.location)
-                .filterIsInstance<LivingEntity>()
+                .filter { it is Player && it is Cat }
                 .filterNot { it is Player && (it.gameMode == GameMode.SPECTATOR || it.gameMode == GameMode.CREATIVE) }
                 .filterNot { it.getBooleanMetadata(MetadataKeys.IS_ENEMY) }
                 .firstOrNull { it != entity }
