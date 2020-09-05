@@ -11,8 +11,6 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
-import org.bukkit.potion.PotionEffect
-import org.bukkit.potion.PotionEffectType
 
 class DraculaTubu : Npc() {
     override val npcName = "tubugai_893"
@@ -25,7 +23,8 @@ class DraculaTubu : Npc() {
         npc.addTrait(TubuTrait(plugin, 2.0f))
         entity.setBooleanMetadata(plugin, MetadataKeys.IS_ENEMY, true)
         if (entity is LivingEntity) {
-            entity.health *= 10
+            val maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)
+            maxHealth?.baseValue = 2000.0
         }
     }
 }
