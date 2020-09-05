@@ -1,5 +1,6 @@
 package neo.atlantis.lostadventurer.command
 
+import neo.atlantis.lostadventurer.model.npc.DraculaTubu
 import neo.atlantis.lostadventurer.model.npc.Tubu
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -8,7 +9,11 @@ import org.bukkit.plugin.java.JavaPlugin
 
 class SpawnCommand(private val plugin: JavaPlugin) : BaseCommand() {
     override fun onCommandByPlayer(player: Player, command: Command, label: String, args: CommandArgs): Boolean {
-        Tubu().create(player.location, plugin)
+        when (args[0]) {
+            "tubu" -> Tubu().create(player.location, plugin)
+            "dtubu" -> DraculaTubu().create(player.location, plugin)
+        }
+
         return true
     }
 
