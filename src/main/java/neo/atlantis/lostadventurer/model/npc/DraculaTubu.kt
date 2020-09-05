@@ -6,6 +6,7 @@ import neo.atlantis.lostadventurer.model.trait.TubuTrait
 import net.citizensnpcs.api.npc.NPC
 import net.citizensnpcs.api.trait.trait.Equipment
 import org.bukkit.Material
+import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.inventory.ItemStack
@@ -26,6 +27,10 @@ class DraculaTubu : Npc() {
         if (entity is LivingEntity) {
             entity.addPotionEffect(PotionEffect(PotionEffectType.SPEED, 200000, 2))
             entity.health *= 10
+            val baseSpeed = entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)?.baseValue
+            baseSpeed?.let {
+                entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)?.baseValue = it * 2.0
+            }
         }
     }
 }

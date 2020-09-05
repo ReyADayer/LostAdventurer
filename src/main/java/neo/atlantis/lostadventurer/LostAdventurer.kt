@@ -1,7 +1,10 @@
 package neo.atlantis.lostadventurer
 
+import neo.atlantis.lostadventurer.command.ItemCommand
 import neo.atlantis.lostadventurer.command.SpawnCommand
 import neo.atlantis.lostadventurer.ext.initCommand
+import neo.atlantis.lostadventurer.ext.registerListener
+import neo.atlantis.lostadventurer.listener.ItemListener
 import org.bukkit.permissions.PermissionDefault
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.plugin.java.annotation.command.Command
@@ -33,11 +36,20 @@ import org.bukkit.plugin.java.annotation.plugin.author.Author
                 permission = PluginPermissions.ADMIN,
                 desc = "spawn command",
                 usage = "/<command>"
+        ),
+        Command(
+                name = PluginCommands.ITEM,
+                permission = PluginPermissions.ADMIN,
+                desc = "item command",
+                usage = "/<command>"
         )
 )
 class LostAdventurer : JavaPlugin() {
     override fun onEnable() {
         initCommand(PluginCommands.SPAWN, SpawnCommand(this))
+        initCommand(PluginCommands.ITEM, ItemCommand())
+
+        registerListener(ItemListener(this))
     }
 
     override fun onDisable() {
