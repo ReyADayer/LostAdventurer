@@ -25,12 +25,8 @@ class DraculaTubu : Npc() {
         npc.addTrait(TubuTrait(plugin))
         entity.setBooleanMetadata(plugin, MetadataKeys.IS_ENEMY, true)
         if (entity is LivingEntity) {
-            entity.addPotionEffect(PotionEffect(PotionEffectType.SPEED, 200000, 2))
             entity.health *= 10
-            val baseSpeed = entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)?.baseValue
-            baseSpeed?.let {
-                entity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)?.baseValue = it * 2.0
-            }
+            npc.navigator.localParameters.speedModifier(3.0f)
         }
     }
 }

@@ -15,23 +15,20 @@ class ItemListener(private val plugin: JavaPlugin) : Listener {
     @EventHandler
     fun onClickSpawnEgg(event: PlayerInteractEvent) {
         val player = event.player
-
-        if (event.action == Action.RIGHT_CLICK_BLOCK) {
+        if (event.action == Action.RIGHT_CLICK_BLOCK || event.action == Action.RIGHT_CLICK_AIR) {
             val itemStack: ItemStack = player.inventory.itemInMainHand
-            val location = event.clickedBlock?.location ?: return
             when (itemStack.itemMeta) {
                 TubuSpawnEgg().toItemStack().itemMeta -> {
-                    Tubu().create(location, plugin)
+                    Tubu().create(player.location, plugin)
                     itemStack.amount -= 1
                     event.isCancelled = true
                 }
                 DraculaTubuSpawnEgg().toItemStack().itemMeta -> {
-                    DraculaTubu().create(location, plugin)
+                    DraculaTubu().create(player.location, plugin)
                     itemStack.amount -= 1
                     event.isCancelled = true
                 }
             }
         }
-
     }
 }
