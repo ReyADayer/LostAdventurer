@@ -6,9 +6,7 @@ import neo.atlantis.lostadventurer.model.trait.TubuTrait
 import net.citizensnpcs.api.npc.NPC
 import net.citizensnpcs.api.trait.trait.Equipment
 import org.bukkit.Material
-import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Entity
-import org.bukkit.entity.LivingEntity
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -22,9 +20,5 @@ class DraculaTubu : Npc() {
         }
         npc.addTrait(TubuTrait(plugin, 2.0f))
         entity.setBooleanMetadata(plugin, MetadataKeys.IS_ENEMY, true)
-        if (entity is LivingEntity) {
-            val maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)
-            maxHealth?.baseValue = 2000.0
-        }
     }
 }
