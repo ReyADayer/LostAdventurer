@@ -14,6 +14,7 @@ import neo.atlantis.lostadventurer.metadata.NpcAttackFlagMetadata
 import neo.atlantis.lostadventurer.model.range.RectRange
 import net.citizensnpcs.api.trait.Trait
 import net.citizensnpcs.api.trait.trait.Equipment
+import net.citizensnpcs.util.PlayerAnimation
 import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.Material
@@ -33,7 +34,7 @@ class TubuTrait(private val plugin: JavaPlugin, private val speed: Float = 1.0f)
     private val npcAttackFlagMetadata = NpcAttackFlagMetadata(plugin)
 
     override fun run() {
-        val entity = npc.entity ?: return
+        val entity = npc.entity as Player? ?: return
         val state: State? = State.values().firstOrNull { it.key == entity.getStringMetadata(MetadataKeys.STATE) }
         if (entity.isOnGround) {
             when (state) {
@@ -68,7 +69,6 @@ class TubuTrait(private val plugin: JavaPlugin, private val speed: Float = 1.0f)
                     npc.getTrait(Equipment::class.java).apply {
                         set(Equipment.EquipmentSlot.HAND, ItemStack(Material.TNT))
                     }
-                    entity.location.block.blockData
                     val targetPlayer: Entity? = getTargetEntity(entity)
                     if (targetPlayer != null) {
                         npc.navigator.setTarget(targetPlayer.location)
@@ -91,7 +91,7 @@ class TubuTrait(private val plugin: JavaPlugin, private val speed: Float = 1.0f)
                     val targetLocation = entity.location.random(3.0, 3.0, 3.0)
                     if (targetLocation.block.type.isBurnable) {
                         npc.navigator.setTarget(targetLocation)
-                        ignite(targetLocation)
+                        ignite(entity, targetLocation)
                         entity.setBooleanMetadata(plugin, MetadataKeys.IGNITE_COOL_TIME, true)
                         object : BukkitRunnable() {
                             override fun run() {
@@ -99,6 +99,11 @@ class TubuTrait(private val plugin: JavaPlugin, private val speed: Float = 1.0f)
                             }
                         }.runTaskLaterAsynchronously(plugin, 1000)
                         entity.setStringMetadata(plugin, MetadataKeys.STATE, State.RUNAWAY_IGNITE.key)
+                    } else {
+                        val rand = Random().nextInt(100)
+                        if (rand < 2) {
+                            entity.setStringMetadata(plugin, MetadataKeys.STATE, State.IDLE.key)
+                        }
                     }
                 }
                 State.RUNAWAY_TNT -> {
@@ -134,11 +139,12 @@ class TubuTrait(private val plugin: JavaPlugin, private val speed: Float = 1.0f)
         }
     }
 
-    private fun attack(entity: Entity, targetEntity: Entity) {
+    private fun attack(entity: Player, targetEntity: Entity) {
         if (npcAttackFlagMetadata.getFlag(entity)) {
             return
         }
         val targetLocation = entity.location.clone().add(0.0, 1.0, 0.0).add(entity.location.direction)
+        PlayerAnimation.ARM_SWING.play(entity)
         targetLocation.spawn<TNTPrimed> {
 
         }
@@ -155,11 +161,13 @@ class TubuTrait(private val plugin: JavaPlugin, private val speed: Float = 1.0f)
                 .firstOrNull { it != entity }
     }
 
-    private fun ignite(targetLocation: Location) {
+    private fun ignite(entity: Player, targetLocation: Location) {
+        PlayerAnimation.ARM_SWING.play(entity)
         BlockFace.values().forEach {
             val block = targetLocation.block.getRelative(it)
             if (block.type == Material.AIR) {
                 block.type = Material.FIRE
+                return
             }
         }
     }

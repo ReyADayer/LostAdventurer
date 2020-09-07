@@ -13,7 +13,7 @@ class NpcAttackFlagMetadata(private val plugin: JavaPlugin) {
             override fun run() {
                 setFlag(entity, false)
             }
-        }.runTaskLater(plugin, 50)
+        }.runTaskLater(plugin, 20)
     }
 
     fun setFlag(entity: Entity, flag: Boolean) {

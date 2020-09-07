@@ -1,6 +1,7 @@
 package neo.atlantis.lostadventurer.command
 
 import neo.atlantis.lostadventurer.model.npc.DraculaTubu
+import neo.atlantis.lostadventurer.model.npc.Gm10
 import neo.atlantis.lostadventurer.model.npc.Tubu
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -12,6 +13,7 @@ class SpawnCommand(private val plugin: JavaPlugin) : BaseCommand() {
         when (args[0]) {
             "tubu" -> Tubu().create(player.location, plugin)
             "dtubu" -> DraculaTubu().create(player.location, plugin)
+            "gm" -> Gm10().create(player.location, plugin)
         }
 
         return true
