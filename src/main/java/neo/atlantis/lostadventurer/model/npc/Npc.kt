@@ -12,6 +12,10 @@ abstract class Npc {
     abstract val npcName: String
     abstract val skinUrl: String
 
+    abstract val uuid: String
+    abstract val textureData: String
+    abstract val textureSignature: String
+
     abstract fun onCreate(npc: NPC, entity: Entity, plugin: JavaPlugin)
 
     fun create(location: Location, plugin: JavaPlugin): Entity {
@@ -20,7 +24,7 @@ abstract class Npc {
             val skinTrait: SkinTrait = getTrait(SkinTrait::class.java)
             skinTrait.setFetchDefaultSkin(false)
             skinTrait.setShouldUpdateSkins(false)
-            setSkin(this, skinUrl, plugin)
+            skinTrait.setSkinPersistent(uuid, textureSignature, textureData)
             name = npcName
         }
         npc.spawn(location)

@@ -14,7 +14,7 @@ object Dependencies {
     }
 
     object Citizens2 {
-        val version  = "2.0.27-SNAPSHOT"
+        val version = "2.0.27-SNAPSHOT"
         val core = "net.citizensnpcs:citizensapi:$version"
         val api = "net.citizensnpcs:citizens:$version"
         val repository = "http://repo.citizensnpcs.co/"

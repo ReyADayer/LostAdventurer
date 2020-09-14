@@ -6,7 +6,6 @@ plugins {
 
 group = "neo.atlantis"
 version = "1.0-SNAPSHOT"
-val pluginName = "Cracked"
 
 repositories {
     jcenter()
