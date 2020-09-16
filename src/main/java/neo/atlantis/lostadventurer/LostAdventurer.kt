@@ -5,7 +5,7 @@ import neo.atlantis.lostadventurer.command.SpawnCommand
 import neo.atlantis.lostadventurer.ext.initCommand
 import neo.atlantis.lostadventurer.ext.registerListener
 import neo.atlantis.lostadventurer.listener.ItemListener
-import neo.atlantis.lostadventurer.listener.SpawnListener
+import neo.atlantis.lostadventurer.listener.NpcListener
 import org.bukkit.permissions.PermissionDefault
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.plugin.java.annotation.command.Command
@@ -51,7 +51,7 @@ class LostAdventurer : JavaPlugin() {
         initCommand(PluginCommands.ITEM, ItemCommand())
 
         registerListener(ItemListener(this))
-        registerListener(SpawnListener(this))
+        registerListener(NpcListener(this))
     }
 
     override fun onDisable() {

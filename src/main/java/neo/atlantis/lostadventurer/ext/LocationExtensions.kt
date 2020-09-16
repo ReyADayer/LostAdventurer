@@ -8,6 +8,8 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.FallingBlock
 import java.util.*
+import kotlin.math.cos
+import kotlin.math.sin
 
 fun Location.spawnEntity(entityType: EntityType): Entity? = world?.spawnEntity(this, entityType)
 
@@ -31,4 +33,12 @@ fun Location.playSound(sound: Sound, volume: Float, pitch: Float) {
 
 fun Location.random(x: Double, y: Double, z: Double): Location {
     return clone().add((Random().nextDouble() - 0.5) * x, (Random().nextDouble() - 0.5) * y, (Random().nextDouble() - 0.5) * z)
+}
+
+fun Location.convertToPolarCoordinates(radius: Double, angle: Double): Location {
+    val currentLocation = this.clone()
+    val x = cos(angle) * radius
+    val y = 0.0
+    val z = sin(angle) * radius
+    return currentLocation.add(x, y, z)
 }
