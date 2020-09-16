@@ -43,7 +43,7 @@ class TetuTanukiTrait(private val plugin: JavaPlugin, private val isEnemy: Boole
 
     private fun run(entity: Player) {
         val state: State? = State.values().firstOrNull { it.key == entity.getStringMetadata(MetadataKeys.STATE) }
-        if (entity.isOnGround) {
+        if (entity.isOnGround || entity.isSwimming) {
             when (state) {
                 State.IDLE -> {
                     npc.getTrait(Equipment::class.java).apply {

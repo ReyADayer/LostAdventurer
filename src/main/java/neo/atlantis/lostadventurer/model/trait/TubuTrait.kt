@@ -36,7 +36,7 @@ class TubuTrait(private val plugin: JavaPlugin, private val speed: Float = 1.0f)
     override fun run() {
         val entity = npc.entity as Player? ?: return
         val state: State? = State.values().firstOrNull { it.key == entity.getStringMetadata(MetadataKeys.STATE) }
-        if (entity.isOnGround) {
+        if (entity.isOnGround || entity.isSwimming) {
             when (state) {
                 State.IDLE -> {
                     npc.navigator.localParameters.speedModifier(1.0f)

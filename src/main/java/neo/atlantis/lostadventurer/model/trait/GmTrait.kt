@@ -27,9 +27,9 @@ class GmTrait(
     private val npcAttackFlagMetadata = NpcAttackFlagMetadata(plugin)
 
     override fun run() {
-        val entity = npc.entity ?: return
+        val entity = npc.entity as Player? ?: return
         val state: State? = State.values().firstOrNull { it.key == entity.getStringMetadata(MetadataKeys.STATE) }
-        if (entity.isOnGround) {
+        if (entity.isOnGround || entity.isSwimming) {
             when (state) {
                 State.IDLE -> {
                     npc.navigator.localParameters.speedModifier(1.0f)

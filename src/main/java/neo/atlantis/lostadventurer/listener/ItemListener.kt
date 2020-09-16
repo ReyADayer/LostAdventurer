@@ -1,8 +1,14 @@
 package neo.atlantis.lostadventurer.listener
 
 import neo.atlantis.lostadventurer.model.item.DraculaTubuSpawnEgg
+import neo.atlantis.lostadventurer.model.item.GmSpawnEgg
+import neo.atlantis.lostadventurer.model.item.TekiTanukiSpawnEgg
+import neo.atlantis.lostadventurer.model.item.TetuTanukiSpawnEgg
 import neo.atlantis.lostadventurer.model.item.TubuSpawnEgg
 import neo.atlantis.lostadventurer.model.npc.DraculaTubu
+import neo.atlantis.lostadventurer.model.npc.Gm10
+import neo.atlantis.lostadventurer.model.npc.TekiTanuki
+import neo.atlantis.lostadventurer.model.npc.TetuTanuki
 import neo.atlantis.lostadventurer.model.npc.Tubu
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -25,6 +31,21 @@ class ItemListener(private val plugin: JavaPlugin) : Listener {
                 }
                 DraculaTubuSpawnEgg().toItemStack().itemMeta -> {
                     DraculaTubu().create(player.location, plugin)
+                    itemStack.amount -= 1
+                    event.isCancelled = true
+                }
+                TetuTanukiSpawnEgg().toItemStack().itemMeta -> {
+                    TetuTanuki().create(player.location, plugin)
+                    itemStack.amount -= 1
+                    event.isCancelled = true
+                }
+                TekiTanukiSpawnEgg().toItemStack().itemMeta -> {
+                    TekiTanuki().create(player.location, plugin)
+                    itemStack.amount -= 1
+                    event.isCancelled = true
+                }
+                GmSpawnEgg().toItemStack().itemMeta -> {
+                    Gm10().create(player.location, plugin)
                     itemStack.amount -= 1
                     event.isCancelled = true
                 }
