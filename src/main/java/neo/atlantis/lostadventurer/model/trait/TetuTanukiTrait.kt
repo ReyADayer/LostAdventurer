@@ -11,6 +11,7 @@ import neo.atlantis.lostadventurer.ext.setStringMetadata
 import neo.atlantis.lostadventurer.ext.spawn
 import neo.atlantis.lostadventurer.metadata.MetadataKeys
 import neo.atlantis.lostadventurer.metadata.NpcAttackFlagMetadata
+import neo.atlantis.lostadventurer.model.damage.Damage
 import neo.atlantis.lostadventurer.model.range.RectRange
 import neo.atlantis.lostadventurer.model.skill.FlameBurst
 import net.citizensnpcs.api.trait.Trait
@@ -147,7 +148,7 @@ class TetuTanukiTrait(private val plugin: JavaPlugin, private val isEnemy: Boole
         }
         if (targetEntity is LivingEntity && entity is Player) {
             PlayerAnimation.ARM_SWING.play(entity)
-            targetEntity.damage(10.0)
+            Damage(8.5).deal(entity, targetEntity)
             targetEntity.fireTicks = 100
             val rand = Random().nextInt(10)
             if (rand == 0) {

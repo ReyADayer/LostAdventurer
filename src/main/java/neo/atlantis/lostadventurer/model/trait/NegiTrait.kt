@@ -13,17 +13,19 @@ import neo.atlantis.lostadventurer.model.range.RectRange
 import net.citizensnpcs.api.trait.Trait
 import net.citizensnpcs.util.PlayerAnimation
 import org.bukkit.GameMode
+import org.bukkit.entity.Cat
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
-import org.bukkit.entity.Mob
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
 import java.util.*
 
-class GmTrait(
+class NegiTrait(
         private val plugin: JavaPlugin,
         private val speed: Float = 1.0f
-) : Trait("gm") {
+) : Trait("negi") {
     private val range = RectRange(10.0, 5.0, 10.0)
     private val npcAttackFlagMetadata = NpcAttackFlagMetadata(plugin)
 
@@ -33,7 +35,7 @@ class GmTrait(
         if (entity.isOnGround || entity.isSwimming) {
             when (state) {
                 State.IDLE -> {
-                    npc.navigator.localParameters.speedModifier(1.0f)
+                    npc.navigator.localParameters.speedModifier(speed)
                     val targetPlayer: Entity? = getTargetEntity(entity)
                     if (targetPlayer != null) {
                         entity.setStringMetadata(plugin, MetadataKeys.STATE, State.ATTACK.key)
@@ -53,7 +55,7 @@ class GmTrait(
                     }
                 }
                 State.ATTACK -> {
-                    npc.navigator.localParameters.speedModifier(1.0f)
+                    npc.navigator.localParameters.speedModifier(speed)
                     val targetEntity: Entity? = getTargetEntity(entity)
                     if (targetEntity != null) {
                         npc.navigator.setTarget(targetEntity.location)
@@ -78,20 +80,22 @@ class GmTrait(
         if (targetEntity is LivingEntity && entity is Player) {
             PlayerAnimation.ARM_SWING.play(entity)
             Damage(5.0).deal(entity, targetEntity)
+            targetEntity.addPotionEffect(PotionEffect(PotionEffectType.BLINDNESS, 400, 10), true)
         }
         npcAttackFlagMetadata.avoidTwice(entity)
     }
 
     private fun getTargetEntity(entity: Entity): Entity? {
         return range.getEntities(entity.location)
-                .filter { it is Mob || it.getBooleanMetadata(MetadataKeys.IS_ENEMY) }
+                .filter { it is Player || it is Cat }
                 .filterNot { it is Player && (it.gameMode == GameMode.SPECTATOR || it.gameMode == GameMode.CREATIVE) }
+                .filterNot { it.getBooleanMetadata(MetadataKeys.IS_ENEMY) }
                 .firstOrNull { it != entity }
     }
 
     private enum class State(val key: String) {
         IDLE("idle"),
-        ATTACK("tnt"),
+        ATTACK("attack"),
         RUNAWAY("runaway");
     }
 }

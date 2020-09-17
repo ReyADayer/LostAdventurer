@@ -3,11 +3,13 @@ package neo.atlantis.lostadventurer.listener
 import neo.atlantis.lostadventurer.metadata.PlayerFlagMetadata
 import neo.atlantis.lostadventurer.model.item.DraculaTubuSpawnEgg
 import neo.atlantis.lostadventurer.model.item.GmSpawnEgg
+import neo.atlantis.lostadventurer.model.item.NegiSpawnEgg
 import neo.atlantis.lostadventurer.model.item.TekiTanukiSpawnEgg
 import neo.atlantis.lostadventurer.model.item.TetuTanukiSpawnEgg
 import neo.atlantis.lostadventurer.model.item.TubuSpawnEgg
 import neo.atlantis.lostadventurer.model.npc.DraculaTubu
 import neo.atlantis.lostadventurer.model.npc.Gm10
+import neo.atlantis.lostadventurer.model.npc.Negi556
 import neo.atlantis.lostadventurer.model.npc.TekiTanuki
 import neo.atlantis.lostadventurer.model.npc.TetuTanuki
 import neo.atlantis.lostadventurer.model.npc.Tubu
@@ -56,6 +58,12 @@ class ItemListener(private val plugin: JavaPlugin) : Listener {
                 GmSpawnEgg().toItemStack().itemMeta -> {
                     playerFlagMetadata.avoidTwice(player)
                     Gm10().create(player.location, plugin)
+                    itemStack.amount -= 1
+                    event.isCancelled = true
+                }
+                NegiSpawnEgg().toItemStack().itemMeta -> {
+                    playerFlagMetadata.avoidTwice(player)
+                    Negi556().create(player.location, plugin)
                     itemStack.amount -= 1
                     event.isCancelled = true
                 }

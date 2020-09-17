@@ -2,6 +2,7 @@ package neo.atlantis.lostadventurer.command
 
 import neo.atlantis.lostadventurer.model.npc.DraculaTubu
 import neo.atlantis.lostadventurer.model.npc.Gm10
+import neo.atlantis.lostadventurer.model.npc.Negi556
 import neo.atlantis.lostadventurer.model.npc.TekiTanuki
 import neo.atlantis.lostadventurer.model.npc.TetuTanuki
 import neo.atlantis.lostadventurer.model.npc.Tubu
@@ -18,6 +19,7 @@ class SpawnCommand(private val plugin: JavaPlugin) : BaseCommand() {
             "gm" -> Gm10().create(player.location, plugin)
             "tetu" -> TetuTanuki().create(player.location, plugin)
             "teki" -> TekiTanuki().create(player.location, plugin)
+            "negi" -> Negi556().create(player.location, plugin)
         }
 
         return true

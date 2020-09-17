@@ -2,6 +2,7 @@ package neo.atlantis.lostadventurer.command
 
 import neo.atlantis.lostadventurer.model.item.DraculaTubuSpawnEgg
 import neo.atlantis.lostadventurer.model.item.GmSpawnEgg
+import neo.atlantis.lostadventurer.model.item.NegiSpawnEgg
 import neo.atlantis.lostadventurer.model.item.TekiTanukiSpawnEgg
 import neo.atlantis.lostadventurer.model.item.TetuTanukiSpawnEgg
 import neo.atlantis.lostadventurer.model.item.TubuSpawnEgg
@@ -17,6 +18,7 @@ class ItemCommand : BaseCommand() {
             addItem(TetuTanukiSpawnEgg().toItemStack(64))
             addItem(TekiTanukiSpawnEgg().toItemStack(64))
             addItem(GmSpawnEgg().toItemStack(64))
+            addItem(NegiSpawnEgg().toItemStack(64))
         }
 
         return true
